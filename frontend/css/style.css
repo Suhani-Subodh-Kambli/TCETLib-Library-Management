@@ -1,0 +1,732 @@
+/* =========================================
+   TCETLib
+   Library Management System
+   ========================================= */
+
+
+/* -----------------------------
+   Reset
+----------------------------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* -----------------------------
+   General
+----------------------------- */
+
+body {
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: #f4f6f8;
+
+    color: #1f2937;
+
+    line-height: 1.5;
+}
+
+
+/* -----------------------------
+   Header
+----------------------------- */
+
+.header {
+    background: #172554;
+
+    color: white;
+
+    padding: 18px 7%;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+
+.header-content {
+    max-width: 1200px;
+
+    margin: auto;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+
+.brand {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.logo {
+    width: 44px;
+
+    height: 44px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    border-radius: 10px;
+
+    font-size: 22px;
+}
+
+
+.brand h1 {
+    font-size: 22px;
+
+    letter-spacing: 0.3px;
+}
+
+
+.brand p {
+    font-size: 12px;
+
+    color: #bfdbfe;
+}
+
+
+.header-tag {
+    font-size: 12px;
+
+    padding: 7px 12px;
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    border-radius: 20px;
+
+    color: #dbeafe;
+}
+
+
+/* -----------------------------
+   Main
+----------------------------- */
+
+.container {
+    width: 90%;
+
+    max-width: 1200px;
+
+    margin: 35px auto;
+}
+
+
+/* -----------------------------
+   Welcome Section
+----------------------------- */
+
+.welcome {
+    margin-bottom: 25px;
+}
+
+
+.eyebrow {
+    color: #2563eb;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    letter-spacing: 1.5px;
+
+    margin-bottom: 5px;
+}
+
+
+.welcome h2 {
+    font-size: 30px;
+
+    color: #111827;
+
+    margin-bottom: 5px;
+}
+
+
+.welcome p:last-child {
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+
+/* -----------------------------
+   Card
+----------------------------- */
+
+.card {
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 12px;
+
+    padding: 28px;
+
+    margin-bottom: 22px;
+
+    box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.035);
+}
+
+
+/* -----------------------------
+   Section Heading
+----------------------------- */
+
+.section-heading {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 12px;
+
+    margin-bottom: 25px;
+}
+
+
+.heading-number {
+    min-width: 34px;
+
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #eff6ff;
+
+    color: #2563eb;
+
+    border-radius: 8px;
+
+    font-size: 12px;
+
+    font-weight: bold;
+}
+
+
+.section-heading h3 {
+    font-size: 17px;
+
+    color: #111827;
+
+    margin-bottom: 2px;
+}
+
+
+.section-heading p {
+    color: #6b7280;
+
+    font-size: 13px;
+}
+
+
+.no-margin {
+    margin-bottom: 0;
+}
+
+
+/* -----------------------------
+   Form Grid
+----------------------------- */
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 20px 24px;
+}
+
+
+.form-group {
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+
+/* -----------------------------
+   Labels
+----------------------------- */
+
+.form-group label {
+    font-size: 13px;
+
+    font-weight: 600;
+
+    color: #374151;
+
+    margin-bottom: 7px;
+}
+
+
+.form-group label span {
+    color: #dc2626;
+}
+
+
+/* -----------------------------
+   Inputs
+----------------------------- */
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+
+    width: 100%;
+
+    padding: 11px 12px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #1f2937;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.form-group textarea {
+    resize: vertical;
+
+    min-height: 80px;
+}
+
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #9ca3af;
+}
+
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+
+.form-group input[readonly] {
+
+    background: #f9fafb;
+
+    color: #6b7280;
+}
+
+
+.form-group small {
+    margin-top: 5px;
+
+    font-size: 11px;
+
+    color: #9ca3af;
+}
+
+
+/* -----------------------------
+   Buttons
+----------------------------- */
+
+.form-actions {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 25px;
+
+    padding-top: 22px;
+
+    border-top: 1px solid #f0f0f0;
+}
+
+
+.btn {
+
+    border: none;
+
+    border-radius: 7px;
+
+    padding: 11px 18px;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s,
+        transform 0.1s;
+}
+
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+
+.primary-btn {
+
+    background: #2563eb;
+
+    color: white;
+}
+
+
+.primary-btn:hover {
+    background: #1d4ed8;
+}
+
+
+.primary-btn span {
+    margin-left: 8px;
+
+    font-size: 16px;
+}
+
+
+.secondary-btn {
+
+    background: #f3f4f6;
+
+    color: #374151;
+}
+
+
+.secondary-btn:hover {
+    background: #e5e7eb;
+}
+
+
+/* -----------------------------
+   Messages
+----------------------------- */
+
+.message {
+
+    display: none;
+
+    margin-top: 18px;
+
+    padding: 11px 14px;
+
+    border-radius: 7px;
+
+    font-size: 13px;
+}
+
+
+.message.success {
+
+    display: block;
+
+    background: #ecfdf5;
+
+    color: #047857;
+
+    border: 1px solid #a7f3d0;
+}
+
+
+.message.error {
+
+    display: block;
+
+    background: #fef2f2;
+
+    color: #b91c1c;
+
+    border: 1px solid #fecaca;
+}
+
+
+/* -----------------------------
+   Records Header
+----------------------------- */
+
+.records-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+
+.record-count {
+
+    font-size: 12px;
+
+    color: #6b7280;
+
+    background: #f9fafb;
+
+    padding: 7px 11px;
+
+    border-radius: 20px;
+
+    border: 1px solid #e5e7eb;
+}
+
+
+.record-count span {
+
+    color: #2563eb;
+
+    font-weight: bold;
+}
+
+
+/* -----------------------------
+   Table
+----------------------------- */
+
+.table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+
+table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 800px;
+}
+
+
+thead {
+    background: #f8fafc;
+}
+
+
+th {
+
+    padding: 12px 10px;
+
+    text-align: left;
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.4px;
+
+    color: #6b7280;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+
+td {
+
+    padding: 13px 10px;
+
+    font-size: 12px;
+
+    color: #4b5563;
+
+    border-bottom: 1px solid #f0f0f0;
+}
+
+
+tbody tr:hover {
+    background: #fafcff;
+}
+
+
+/* -----------------------------
+   Status
+----------------------------- */
+
+.status {
+
+    display: inline-block;
+
+    padding: 4px 9px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    background: #fef3c7;
+
+    color: #92400e;
+}
+
+
+/* -----------------------------
+   Empty State
+----------------------------- */
+
+.empty-state {
+
+    text-align: center;
+
+    padding: 45px 20px;
+
+    color: #9ca3af;
+}
+
+
+.empty-state .empty-icon {
+
+    font-size: 28px;
+
+    margin-bottom: 8px;
+}
+
+
+.empty-state strong {
+
+    display: block;
+
+    color: #6b7280;
+
+    font-size: 13px;
+
+    margin-bottom: 3px;
+}
+
+
+.empty-state p {
+    font-size: 12px;
+}
+
+
+/* -----------------------------
+   Footer
+----------------------------- */
+
+footer {
+
+    text-align: center;
+
+    padding: 25px;
+
+    color: #9ca3af;
+
+    font-size: 11px;
+
+    border-top: 1px solid #e5e7eb;
+}
+
+
+footer span {
+
+    margin-left: 5px;
+
+    color: #c4c7cc;
+}
+
+
+/* -----------------------------
+   Responsive
+----------------------------- */
+
+@media (max-width: 700px) {
+
+    .header {
+        padding: 16px 5%;
+    }
+
+    .header-content {
+        align-items: flex-start;
+    }
+
+    .header-tag {
+        display: none;
+    }
+
+    .container {
+        width: 94%;
+
+        margin-top: 25px;
+    }
+
+    .welcome h2 {
+        font-size: 25px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full-width {
+        grid-column: auto;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .records-header {
+        align-items: flex-start;
+
+        gap: 10px;
+
+        flex-direction: column;
+    }
+
+}
