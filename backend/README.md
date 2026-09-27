@@ -2,23 +2,24 @@
 
 Plain **PHP + MySQL (PDO)** backend. No frameworks, no authentication, no extra features.
 
+This backend serves **exactly what the frontend uses** — three API files, nothing else.
+
 ## Structure
 
 ```text
 backend/
 │
 ├── config/
-│   └── database.php          PDO connection, CORS, JSON helpers
+│   └── database.php          PDO connection, CORS, JSON + validation helpers
 │
 ├── api/
-│   ├── books.php             GET / POST / PUT / DELETE
-│   ├── issue.php             POST
-│   ├── return.php            POST
-│   ├── transactions.php      GET (all + single by id)
-│   └── dashboard.php         GET
+│   ├── books.php             GET  — list all books (book dropdown)
+│   ├── issue.php             POST — issue a book (issue form)
+│   └── transactions.php      GET  — all transactions (transactions table)
 │
 ├── database/
-│   └── library_management.sql
+│   ├── library_management.sql   database + tables
+│   └── seed.sql                 sample data for testing
 │
 └── README.md
 ```
@@ -29,7 +30,7 @@ backend/
 
 ### Step 1 — Create the database
 
-Import `database/library_management.sql` using phpMyAdmin, or run:
+Import `database/library_management.sql` using MySQL Workbench, or run:
 
 ```bash
 mysql -u root -p < database/library_management.sql
@@ -41,7 +42,17 @@ This creates:
 * table `books`
 * table `transactions`
 
-### Step 2 — Check credentials
+### Step 2 — Load sample data (for testing)
+
+```bash
+mysql -u root -p < database/seed.sql
+```
+
+`database/seed.sql` resets and inserts **8 books** and **6 transactions**
+(3 `Issued`, 3 `Returned`) with realistic student details, so every screen has
+data to show. Safe to re-run any time — it starts fresh each run.
+
+### Step 3 — Check credentials
 
 Credentials live only in `config/database.php`:
 
@@ -52,9 +63,9 @@ $username = "root";
 $password = "";
 ```
 
-Change them if your MySQL setup is different (e.g. XAMPP default is `root` with an empty password).
+Change them to match your local MySQL.
 
-### Step 3 — Start PHP
+### Step 4 — Start PHP
 
 From the `backend/` folder:
 
@@ -64,11 +75,45 @@ php -S localhost:8000
 
 API base URL: `http://localhost:8000/api/`
 
+### Step 5 — Test manually in the browser
+
+Make sure **nothing else is using port 8000**, then open:
+
+```text
+http://localhost:8000/api/books.php
+http://localhost:8000/api/transactions.php
+```
+
+You should see JSON with the seed data. To test the POST issue endpoint use
+Postman or `curl` (see the test checklist at the bottom).
+
+### How a request flows (for the viva)
+
+```text
+Browser / fetch("http://localhost:8000/api/issue.php")
+        ↓
+PHP built-in server receives the request
+        ↓
+api/issue.php runs: read JSON → validate every field
+        ↓
+config/database.php opens a PDO connection to MySQL
+        ↓
+Prepared statements run inside a DB transaction
+        ↓
+PHP echoes JSON: {"success": true, ...}
+        ↓
+Frontend reads result.success / result.message / result.data
+```
+
+Every `.php` file is an independent entry point — PHP executes it from top to
+bottom on each request, then exits. There is no framework and no hidden magic:
+the file you open in the browser is the file that runs.
+
 ---
 
 ## 2. CORS
 
-If the frontend runs on a different port (e.g. Live Server on `5500`), add its origin to the
+If the frontend runs on a different port (e.g. Live Server on `5500`), its origin must be in the
 `$allowedOrigins` array in `config/database.php`:
 
 ```php
@@ -114,102 +159,107 @@ Status codes used: `200` `201` `400` `404` `405` `409` `500`.
 
 ## 4. API Reference
 
-### Books — `api/books.php`
+### Books — `api/books.php` (GET)
 
-| Method | Purpose | Body / Query |
-| ------ | ------- | ------------ |
-| GET    | List all books | — |
-| POST   | Add book | `title`, `author`, `category`, `quantity` |
-| PUT    | Update book | `id`, `title`, `author`, `category`, `quantity` |
-| DELETE | Delete book | `?id=1` |
+Returns all books, newest first. Used by the frontend to fill the book dropdown
+(shows only books where `available_quantity > 0`).
 
-**POST** sets `available_quantity = quantity`.
-
-**PUT** preserves already issued copies:
-
-```text
-Old quantity = 5, old available = 2  →  issued = 3
-New quantity = 10                    →  new available = 10 - 3 = 7
+```json
+{
+    "success": true,
+    "message": "Books retrieved successfully",
+    "data": [
+        {
+            "id": 1,
+            "title": "JavaScript Basics",
+            "author": "John Smith",
+            "category": "Programming",
+            "quantity": 5,
+            "available_quantity": 5,
+            "created_at": "2026-09-27 18:33:41"
+        }
+    ]
+}
 ```
 
-If the new quantity is smaller than the currently issued count, the update is rejected.
-
-**DELETE** is rejected (`409`) while any copy of the book is still issued.
+Any method other than GET → `405 Method not allowed`.
 
 ### Issue — `api/issue.php` (POST)
 
 ```json
 {
     "student_name": "Mahika",
+    "academic_year": "TE",
+    "department": "Information Technology",
+    "division": "A",
+    "contact": "9876543210",
     "book_id": 1,
-    "issue_date": "2026-09-27"
+    "issue_date": "2026-09-27",
+    "due_date": "2026-10-04",
+    "remarks": "Library card verified"
 }
 ```
+
+All 9 fields above come straight from the frontend issue form.
 
 Flow: validate → book exists (`404`) → `available_quantity > 0` else `409 "Book is not available"`
-→ insert transaction → `available_quantity - 1`.
+→ insert transaction (with all student details) → `available_quantity - 1`.
 
 Both writes run inside a PDO transaction (`beginTransaction` / `commit` / `rollBack`), with the
-book row locked using `SELECT ... FOR UPDATE`.
+book row locked using `SELECT ... FOR UPDATE`, so the last copy can never be issued twice.
 
-### Return — `api/return.php` (POST)
-
-```json
-{
-    "transaction_id": 1
-}
-```
-
-Flow: validate → transaction exists (`404`) → status must be `Issued` else
-`409 "This book has already been returned"` → set `return_date = CURDATE()`, `status = 'Returned'`
-→ `available_quantity + 1`.
-
-The `UPDATE ... WHERE status = 'Issued'` plus `rowCount()` check guarantees the availability
-counter can never be increased twice for the same transaction. Runs inside a PDO transaction.
-
-### Transactions — `api/transactions.php` (GET)
-
-* `GET /api/transactions.php` — all transactions (JOIN with `books`)
-* `GET /api/transactions.php?id=1` — single transaction (`404` if not found)
-
-### Dashboard — `api/dashboard.php` (GET)
+Success → `201`:
 
 ```json
 {
     "success": true,
-    "message": "Dashboard statistics retrieved successfully",
-    "data": {
-        "total_books": 10,
-        "available_books": 7,
-        "issued_books": 3,
-        "total_transactions": 15
-    }
+    "message": "Book issued successfully",
+    "data": { "transaction_id": 7 }
 }
 ```
 
-* **total_books** — `COUNT(*)` of book records
-* **available_books** — `SUM(available_quantity)`
-* **issued_books** — `COUNT(*)` of transactions with `status = 'Issued'`
-* **total_transactions** — `COUNT(*)` of transaction records
+### Transactions — `api/transactions.php` (GET)
+
+All transactions joined with `books`, newest first. Powers the transactions table.
+
+Each row returns every field the frontend displays:
+
+```json
+{
+    "id": 3,
+    "student_name": "Mahika",
+    "academic_year": "TE",
+    "department": "Information Technology",
+    "division": "A",
+    "contact": "9876543210",
+    "book_id": 1,
+    "book_title": "JavaScript Basics",
+    "issue_date": "2026-09-27",
+    "due_date": "2026-10-04",
+    "remarks": "Library card verified",
+    "return_date": null,
+    "status": "Issued"
+}
+```
+
+Any method other than GET → `405 Method not allowed`.
 
 ---
 
 ## 5. Validation
 
-### Book
-* Title / Author / Category — required, cannot be empty
-* Quantity — required, integer, greater than 0
+Every field is validated on the backend, even though the frontend also validates:
 
-### Issue
-* Student name required
+* Student name required (max 255)
+* Academic year required (max 20)
+* Department required (max 100)
+* Division required (max 10)
+* Contact required, exactly 10 digits
 * Book ID required, book must exist
 * `available_quantity` must be greater than 0
 * Issue date required and must match `YYYY-MM-DD`
-
-### Return
-* Transaction ID required
-* Transaction must exist
-* Status must be `Issued`
+* Due date required, valid `YYYY-MM-DD`, and not before the issue date
+* Remarks optional (max 255)
 
 Frontend validation is only for user experience — PHP validation protects the database.
 
@@ -229,35 +279,24 @@ Frontend validation is only for user experience — PHP validation protects the 
 
 | # | Test | Expected |
 | - | ---- | -------- |
-| 1 | `POST /api/books.php` with valid data | `201`, book inserted, `available_quantity = quantity` |
-| 2 | `GET /api/books.php` | `200`, all books returned |
-| 3 | `PUT /api/books.php` with new quantity | `200`, issued copies preserved in `available_quantity` |
-| 4 | `POST /api/issue.php` for an available book | `201`, `available_quantity - 1`, transaction `Issued` |
-| 5 | `POST /api/issue.php` when `available_quantity = 0` | `409` `"Book is not available"`, no transaction created |
-| 6 | `POST /api/return.php` for an issued transaction | `200`, status `Returned`, `return_date` set, `available_quantity + 1` |
-| 7 | `POST /api/return.php` for the same transaction again | `409` `"This book has already been returned"`, quantity unchanged |
-| 8 | `DELETE /api/books.php?id=1` while copies are issued | `409` `"Cannot delete a book that is currently issued"` |
-| 9 | `GET /api/transactions.php` | `200`, JOIN results with `book_title` |
-| 10 | `GET /api/dashboard.php` | `200`, four statistic values |
+| 1 | `GET /api/books.php` | `200`, all 8 seed books returned |
+| 2 | `GET /api/transactions.php` | `200`, 6 rows, all student fields + `book_title` present |
+| 3 | `POST /api/issue.php` with all 9 fields | `201`, transaction created, `available_quantity - 1` |
+| 4 | `POST /api/issue.php` when `available_quantity = 0` | `409` `"Book is not available"`, no transaction |
+| 5 | `POST /api/issue.php` with missing department | `400` `"Department is required"` |
+| 6 | `POST /api/issue.php` with `due_date < issue_date` | `400` `"Due date cannot be before issue date"` |
+| 7 | `POST /api/issue.php` with contact not 10 digits | `400` `"Contact number must contain exactly 10 digits"` |
+| 8 | `POST /api/books.php` (method not allowed) | `405` |
+| 9 | `GET /api/dashboard.php` (file removed) | `404` |
 
 ### Example curl commands
 
 ```bash
-curl -X POST http://localhost:8000/api/books.php -H "Content-Type: application/json" -d "{\"title\":\"JavaScript Basics\",\"author\":\"John Smith\",\"category\":\"Programming\",\"quantity\":5}"
-
 curl http://localhost:8000/api/books.php
 
-curl -X PUT http://localhost:8000/api/books.php -H "Content-Type: application/json" -d "{\"id\":1,\"title\":\"JavaScript Basics\",\"author\":\"John Smith\",\"category\":\"Programming\",\"quantity\":10}"
-
-curl -X DELETE "http://localhost:8000/api/books.php?id=1"
-
-curl -X POST http://localhost:8000/api/issue.php -H "Content-Type: application/json" -d "{\"student_name\":\"Mahika\",\"book_id\":1,\"issue_date\":\"2026-09-27\"}"
-
-curl -X POST http://localhost:8000/api/return.php -H "Content-Type: application/json" -d "{\"transaction_id\":1}"
-
 curl http://localhost:8000/api/transactions.php
-curl "http://localhost:8000/api/transactions.php?id=1"
-curl http://localhost:8000/api/dashboard.php
+
+curl -X POST http://localhost:8000/api/issue.php -H "Content-Type: application/json" -d "{\"student_name\":\"Mahika\",\"academic_year\":\"TE\",\"department\":\"Information Technology\",\"division\":\"A\",\"contact\":\"9876543210\",\"book_id\":1,\"issue_date\":\"2026-09-27\",\"due_date\":\"2026-10-04\",\"remarks\":\"Library card verified\"}"
 ```
 
 ---
@@ -272,18 +311,21 @@ curl http://localhost:8000/api/dashboard.php
 
 **Why prepared statements?** They prevent SQL injection by separating SQL logic from user data.
 
-**Why transactions?** Issuing/returning a book changes two tables (`transactions` and `books`);
+**Why transactions?** Issuing a book changes two tables (`transactions` and `books`);
 `beginTransaction()` keeps them consistent — if one query fails, `rollBack()` undoes the other.
 
 **Why `available_quantity`?** `quantity` = total copies owned, `available_quantity` = copies free
 right now. Example: total 5, available 3 → issued 2.
 
 **Why a foreign key?** `transactions.book_id` references `books(id)`, so a transaction can never
-point to a non-existent book (`ON DELETE RESTRICT` also blocks deleting books that are referenced).
+point to a non-existent book (`ON DELETE RESTRICT` protects the data too).
 
 **Why validate on the backend if the frontend already validates?** Frontend validation improves
 user experience, but JavaScript can be bypassed (browser dev tools, direct curl/Postman calls).
 Backend validation protects the database and data integrity.
 
-**Why `FOR UPDATE` in issue/return?** It locks the row inside the transaction so two simultaneous
-requests cannot both issue the last copy or return the same book twice.
+**Why `FOR UPDATE`?** It locks the row inside the transaction so two simultaneous requests
+cannot both issue the last copy.
+
+**Why only three API files?** The backend implements exactly what the frontend consumes —
+no unused endpoints, no dead code.

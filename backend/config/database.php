@@ -93,7 +93,7 @@ function read_json_input()
     return is_array($data) ? $data : [];
 }
 
-function get_required_string($data, $key, $label)
+function get_required_string($data, $key, $label, $maxLength = null)
 {
     $value = isset($data[$key]) && is_scalar($data[$key])
         ? trim((string) $data[$key])
@@ -101,6 +101,10 @@ function get_required_string($data, $key, $label)
 
     if ($value === "") {
         send_error($label . " is required", 400);
+    }
+
+    if ($maxLength !== null && strlen($value) > $maxLength) {
+        send_error($label . " must be " . $maxLength . " characters or fewer", 400);
     }
 
     return $value;
