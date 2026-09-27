@@ -1,636 +1,326 @@
-/* =========================================
-   TCETLib
-   Library Management System
+const API = "http://localhost:8000/api";
 
-   S1 - JavaScript
+const studentName = document.getElementById("studentName");
+const academicYear = document.getElementById("academicYear");
+const department = document.getElementById("department");
+const division = document.getElementById("division");
+const contact = document.getElementById("contact");
 
-   Implements:
-   1. Transaction validation
-   2. DOM manipulation
-   3. Event handling
-   ========================================= */
+const book = document.getElementById("book");
+const issueDate = document.getElementById("issueDate");
+const dueDate = document.getElementById("dueDate");
+const remarks = document.getElementById("remarks");
 
+const submitBtn = document.getElementById("submitBtn");
+const resetBtn = document.getElementById("resetBtn");
 
-/* -----------------------------------------
-   Get HTML Elements
------------------------------------------ */
+const message = document.getElementById("message");
+const transactionBody = document.getElementById("transactionBody");
+const recordCount = document.getElementById("recordCount");
 
-const studentName =
-    document.getElementById("studentName");
+// Set today's date
+function setDates() {
+const today = new Date();
 
-const academicYear =
-    document.getElementById("academicYear");
+```
+issueDate.value = today.toISOString().split("T")[0];
 
-const department =
-    document.getElementById("department");
+const due = new Date(today);
+due.setDate(due.getDate() + 7);
 
-const division =
-    document.getElementById("division");
+dueDate.value = due.toISOString().split("T")[0];
+```
 
-const contact =
-    document.getElementById("contact");
-
-const book =
-    document.getElementById("book");
-
-const bookId =
-    document.getElementById("bookId");
-
-const issueDate =
-    document.getElementById("issueDate");
-
-const dueDate =
-    document.getElementById("dueDate");
-
-const remarks =
-    document.getElementById("remarks");
-
-const submitBtn =
-    document.getElementById("submitBtn");
-
-const resetBtn =
-    document.getElementById("resetBtn");
-
-const message =
-    document.getElementById("message");
-
-const transactionBody =
-    document.getElementById("transactionBody");
-
-const recordCount =
-    document.getElementById("recordCount");
-
-const emptyRow =
-    document.getElementById("emptyRow");
-
-
-/* -----------------------------------------
-   Set Today's Date
------------------------------------------ */
-
-function setTodayDate() {
-
-    const today = new Date();
-
-    const year =
-        today.getFullYear();
-
-    const month =
-        String(today.getMonth() + 1)
-        .padStart(2, "0");
-
-    const day =
-        String(today.getDate())
-        .padStart(2, "0");
-
-    const todayDate =
-        `${year}-${month}-${day}`;
-
-    issueDate.value = todayDate;
-
-    setDefaultDueDate(todayDate);
 }
 
-
-/* -----------------------------------------
-   Set Due Date
-   Default = 7 days after issue date
------------------------------------------ */
-
-function setDefaultDueDate(dateString) {
-
-    const date =
-        new Date(dateString);
-
-    date.setDate(
-        date.getDate() + 7
-    );
-
-    const year =
-        date.getFullYear();
-
-    const month =
-        String(date.getMonth() + 1)
-        .padStart(2, "0");
-
-    const day =
-        String(date.getDate())
-        .padStart(2, "0");
-
-    dueDate.value =
-        `${year}-${month}-${day}`;
-}
-
-
-/* -----------------------------------------
-   Book Selection Event
------------------------------------------ */
-
-book.addEventListener(
-    "change",
-    function () {
-
-        /*
-            When the user selects a book,
-            automatically display its Book ID.
-        */
-
-        bookId.value = book.value;
-
-    }
-);
-
-
-/* -----------------------------------------
-   Issue Date Change Event
------------------------------------------ */
-
-issueDate.addEventListener(
-    "change",
-    function () {
-
-        if (issueDate.value) {
-
-            setDefaultDueDate(
-                issueDate.value
-            );
-
-        }
-
-    }
-);
-
-
-/* -----------------------------------------
-   Contact Number Input Event
------------------------------------------ */
-
-contact.addEventListener(
-    "input",
-    function () {
-
-        /*
-            Remove all non-numeric
-            characters.
-        */
-
-        contact.value =
-            contact.value.replace(
-                /\D/g,
-                ""
-            );
-
-    }
-);
-
-
-/* -----------------------------------------
-   Display Message
------------------------------------------ */
-
+// Show message
 function showMessage(text, type) {
+message.textContent = text;
+message.className = "message " + type;
+}
 
-    message.textContent = text;
+// Contact number: only digits
+contact.addEventListener("input", function () {
+contact.value = contact.value.replace(/\D/g, "").slice(0, 10);
+});
 
-    message.className =
-        "message " + type;
+// Change due date when issue date changes
+issueDate.addEventListener("change", function () {
+
+```
+if (!issueDate.value) {
+    dueDate.value = "";
+    return;
+}
+
+const date = new Date(issueDate.value);
+date.setDate(date.getDate() + 7);
+
+dueDate.value = date.toISOString().split("T")[0];
+```
+
+});
+
+// Load books from database
+async function loadBooks() {
+
+```
+try {
+    const response = await fetch(API + "/books.php");
+    const result = await response.json();
+
+    if (!result.success) {
+        throw new Error(result.message);
+    }
+
+    book.innerHTML = '<option value="">Select a book</option>';
+
+    result.data.forEach(function (item) {
+
+        if (Number(item.available_quantity) > 0) {
+
+            const option = document.createElement("option");
+
+            // Actual MySQL book ID
+            option.value = item.id;
+
+            option.textContent =
+                item.title + " — " +
+                item.available_quantity + " available";
+
+            book.appendChild(option);
+        }
+    });
+
+} catch (error) {
+
+    console.error(error);
+
+    book.innerHTML =
+        '<option value="">Unable to load books</option>';
+
+    showMessage("Could not load books.", "error");
+}
+```
 
 }
 
+// Load transactions from database
+async function loadTransactions() {
 
-/* -----------------------------------------
-   Validate Form
------------------------------------------ */
+```
+try {
+    const response = await fetch(API + "/transactions.php");
+    const result = await response.json();
 
+    if (!result.success) {
+        throw new Error(result.message);
+    }
+
+    transactionBody.innerHTML = "";
+
+    if (result.data.length === 0) {
+
+        transactionBody.innerHTML = `
+            <tr>
+                <td colspan="7" class="empty-state">
+                    No transactions yet
+                </td>
+            </tr>
+        `;
+
+        recordCount.textContent = "0";
+        return;
+    }
+
+    result.data.forEach(function (transaction) {
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${transaction.student_name}</td>
+            <td>${transaction.department}</td>
+            <td>${transaction.academic_year}</td>
+            <td>${transaction.book_title}</td>
+            <td>${transaction.issue_date}</td>
+            <td>${transaction.due_date}</td>
+            <td>
+                <span class="status ${transaction.status.toLowerCase()}">
+                    ${transaction.status}
+                </span>
+            </td>
+        `;
+
+        transactionBody.appendChild(row);
+    });
+
+    recordCount.textContent = result.data.length;
+
+} catch (error) {
+
+    console.error(error);
+
+    transactionBody.innerHTML = `
+        <tr>
+            <td colspan="7" class="empty-state">
+                Unable to load transactions
+            </td>
+        </tr>
+    `;
+
+    recordCount.textContent = "0";
+}
+```
+
+}
+
+// Validate form
 function validateForm() {
 
-
-    /* Name */
-
-    if (studentName.value.trim() === "") {
-
-        showMessage(
-            "Please enter your full name.",
-            "error"
-        );
-
-        studentName.focus();
-
-        return false;
-    }
-
-
-    /* Academic Year */
-
-    if (academicYear.value === "") {
-
-        showMessage(
-            "Please select your academic year.",
-            "error"
-        );
-
-        academicYear.focus();
-
-        return false;
-    }
-
-
-    /* Department */
-
-    if (department.value === "") {
-
-        showMessage(
-            "Please select your department.",
-            "error"
-        );
-
-        department.focus();
-
-        return false;
-    }
-
-
-    /* Division */
-
-    if (division.value === "") {
-
-        showMessage(
-            "Please select your division.",
-            "error"
-        );
-
-        division.focus();
-
-        return false;
-    }
-
-
-    /* Contact Number */
-
-    if (
-        !/^[0-9]{10}$/.test(
-            contact.value
-        )
-    ) {
-
-        showMessage(
-            "Please enter a valid 10-digit contact number.",
-            "error"
-        );
-
-        contact.focus();
-
-        return false;
-    }
-
-
-    /* Book */
-
-    if (book.value === "") {
-
-        showMessage(
-            "Please select a book.",
-            "error"
-        );
-
-        book.focus();
-
-        return false;
-    }
-
-
-    /* Issue Date */
-
-    if (issueDate.value === "") {
-
-        showMessage(
-            "Issue date is required.",
-            "error"
-        );
-
-        issueDate.focus();
-
-        return false;
-    }
-
-
-    /* Due Date */
-
-    if (dueDate.value === "") {
-
-        showMessage(
-            "Due date is required.",
-            "error"
-        );
-
-        dueDate.focus();
-
-        return false;
-    }
-
-
-    /* Date Validation */
-
-    const issue =
-        new Date(issueDate.value);
-
-    const due =
-        new Date(dueDate.value);
-
-
-    if (due < issue) {
-
-        showMessage(
-            "Due date cannot be before the issue date.",
-            "error"
-        );
-
-        dueDate.focus();
-
-        return false;
-    }
-
-
-    return true;
+```
+if (!studentName.value.trim()) {
+    showMessage("Please enter the student's name.", "error");
+    return false;
 }
 
+if (!academicYear.value) {
+    showMessage("Please select the academic year.", "error");
+    return false;
+}
 
-/* -----------------------------------------
-   Add Transaction to Table
-   DOM MANIPULATION
------------------------------------------ */
+if (!department.value) {
+    showMessage("Please select the department.", "error");
+    return false;
+}
 
-function addTransactionToTable() {
+if (!division.value) {
+    showMessage("Please select the division.", "error");
+    return false;
+}
 
-    /*
-        Remove "No transactions yet"
-        message when the first
-        transaction is added.
-    */
+if (!/^\d{10}$/.test(contact.value)) {
+    showMessage("Contact number must contain 10 digits.", "error");
+    return false;
+}
 
-    if (emptyRow) {
-        emptyRow.remove();
-    }
+if (!book.value) {
+    showMessage("Please select a book.", "error");
+    return false;
+}
 
+if (!issueDate.value || !dueDate.value) {
+    showMessage("Please select the issue and due dates.", "error");
+    return false;
+}
 
-    /* Create Table Row */
+if (dueDate.value < issueDate.value) {
+    showMessage("Due date cannot be before issue date.", "error");
+    return false;
+}
 
-    const row =
-        document.createElement("tr");
-
-
-    /* Student Name */
-
-    const nameCell =
-        document.createElement("td");
-
-    nameCell.textContent =
-        studentName.value;
-
-
-    /* Department */
-
-    const departmentCell =
-        document.createElement("td");
-
-    departmentCell.textContent =
-        department.value;
-
-
-    /* Academic Year */
-
-    const yearCell =
-        document.createElement("td");
-
-    yearCell.textContent =
-        academicYear.value;
-
-
-    /* Book */
-
-    const bookCell =
-        document.createElement("td");
-
-    bookCell.textContent =
-        book.options[
-            book.selectedIndex
-        ].text;
-
-
-    /* Issue Date */
-
-    const issueDateCell =
-        document.createElement("td");
-
-    issueDateCell.textContent =
-        issueDate.value;
-
-
-    /* Due Date */
-
-    const dueDateCell =
-        document.createElement("td");
-
-    dueDateCell.textContent =
-        dueDate.value;
-
-
-    /* Status */
-
-    const statusCell =
-        document.createElement("td");
-
-    const status =
-        document.createElement("span");
-
-    status.textContent =
-        "Issued";
-
-    status.classList.add(
-        "status"
-    );
-
-    statusCell.appendChild(
-        status
-    );
-
-
-    /* Add cells to row */
-
-    row.appendChild(
-        nameCell
-    );
-
-    row.appendChild(
-        departmentCell
-    );
-
-    row.appendChild(
-        yearCell
-    );
-
-    row.appendChild(
-        bookCell
-    );
-
-    row.appendChild(
-        issueDateCell
-    );
-
-    row.appendChild(
-        dueDateCell
-    );
-
-    row.appendChild(
-        statusCell
-    );
-
-
-    /* Add row to table */
-
-    transactionBody.appendChild(
-        row
-    );
-
-
-    /* Update record count */
-
-    updateRecordCount();
+return true;
+```
 
 }
 
+// Issue book
+async function issueBook() {
 
-/* -----------------------------------------
-   Update Record Count
------------------------------------------ */
+```
+if (!validateForm()) {
+    return;
+}
 
-function updateRecordCount() {
+submitBtn.disabled = true;
+submitBtn.textContent = "Issuing...";
 
-    const rows =
-        transactionBody.querySelectorAll(
-            "tr"
-        );
+const data = {
+    student_name: studentName.value.trim(),
+    academic_year: academicYear.value,
+    department: department.value,
+    division: division.value,
+    contact: contact.value,
+    book_id: Number(book.value),
+    issue_date: issueDate.value,
+    due_date: dueDate.value,
+    remarks: remarks.value.trim()
+};
 
-    recordCount.textContent =
-        rows.length;
+try {
+
+    const response = await fetch(API + "/issue.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+
+    const result = await response.json();
+
+    if (!result.success) {
+        throw new Error(result.message);
+    }
+
+    showMessage(
+        result.message || "Book issued successfully.",
+        "success"
+    );
+
+    // Get updated data from database
+    await loadBooks();
+    await loadTransactions();
+
+    clearForm(false);
+
+} catch (error) {
+
+    console.error(error);
+
+    showMessage(
+        error.message || "Unable to issue book.",
+        "error"
+    );
+
+} finally {
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Issue Book →";
+}
+```
 
 }
 
+// Clear form
+function clearForm(showMessageText = true) {
 
-/* -----------------------------------------
-   Issue Book Button Event
------------------------------------------ */
+```
+studentName.value = "";
+academicYear.value = "";
+department.value = "";
+division.value = "";
+contact.value = "";
 
-submitBtn.addEventListener(
-    "click",
-    function (event) {
+book.value = "";
+remarks.value = "";
 
-        event.preventDefault();
+setDates();
 
+if (showMessageText) {
+    showMessage("Form cleared.", "success");
+}
+```
 
-        /*
-            Step 1:
-            Validate the transaction.
-        */
+}
 
-        const isValid =
-            validateForm();
+// Button events
+submitBtn.addEventListener("click", issueBook);
 
+resetBtn.addEventListener("click", function () {
+clearForm(true);
+});
 
-        if (!isValid) {
-            return;
-        }
-
-
-        /*
-            Step 2:
-            Add transaction to DOM.
-        */
-
-        addTransactionToTable();
-
-
-        /*
-            Step 3:
-            Display success message.
-        */
-
-        showMessage(
-            "Book issued successfully!",
-            "success"
-        );
-
-
-        /*
-            Step 4:
-            Clear form fields.
-        */
-
-        studentName.value = "";
-
-        academicYear.value = "";
-
-        department.value = "";
-
-        division.value = "";
-
-        contact.value = "";
-
-        book.value = "";
-
-        bookId.value = "";
-
-        remarks.value = "";
-
-
-        /*
-            Keep today's date
-            after submission.
-        */
-
-        setTodayDate();
-
-    }
-);
-
-
-/* -----------------------------------------
-   Clear Form Button Event
------------------------------------------ */
-
-resetBtn.addEventListener(
-    "click",
-    function () {
-
-        studentName.value = "";
-
-        academicYear.value = "";
-
-        department.value = "";
-
-        division.value = "";
-
-        contact.value = "";
-
-        book.value = "";
-
-        bookId.value = "";
-
-        remarks.value = "";
-
-        message.textContent = "";
-
-        message.className =
-            "message";
-
-        setTodayDate();
-
-    }
-);
-
-
-/* -----------------------------------------
-   Initial Page Setup
------------------------------------------ */
-
-setTodayDate();
+// Page load
+setDates();
+loadBooks();
+loadTransactions();

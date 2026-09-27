@@ -1,457 +1,209 @@
 <!DOCTYPE html>
-<html lang="en">
 
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>TCETLib | Library Management System</title>
-
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-    <!-- Header -->
-    <header class="header">
-
-        <div class="header-content">
-
-            <div class="brand">
-                <div class="logo">📚</div>
-
-                <div>
-                    <h1>TCETLib</h1>
-                    <p>Library Management System</p>
-                </div>
+<header class="header">
+    <div class="container header-content">
+        <div class="brand">
+            <span class="logo">📚</span>
+            <div>
+                <h1>TCETLib</h1>
+                <p>Library Management System</p>
             </div>
-
-            <div class="header-tag">
-                Student Library Portal
-            </div>
-
         </div>
 
-    </header>
+```
+    <span class="header-tag">Student Library Portal</span>
+</div>
+```
+
+</header>
+
+<main class="container">
+
+```
+<section class="welcome">
+    <p class="eyebrow">LIBRARY PORTAL</p>
+    <h2>Issue a Book</h2>
+    <p>Enter your details and select the book you want to issue from the library.</p>
+</section>
 
 
-    <main class="container">
+<!-- Student Information -->
+<section class="card">
+    <div class="section-heading">
+        <span>01</span>
+        <div>
+            <h3>Student Information</h3>
+            <p>Provide your basic academic and contact details.</p>
+        </div>
+    </div>
 
-        <!-- Page Introduction -->
-        <section class="welcome">
+    <div class="form-grid">
 
+        <div class="form-group">
+            <label for="studentName">Full Name <b>*</b></label>
+            <input type="text" id="studentName"
+                   placeholder="Enter your full name">
+        </div>
+
+        <div class="form-group">
+            <label for="academicYear">Academic Year <b>*</b></label>
+            <select id="academicYear">
+                <option value="">Select academic year</option>
+                <option value="FE">FE</option>
+                <option value="SE">SE</option>
+                <option value="TE">TE</option>
+                <option value="BE">BE</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="department">Department <b>*</b></label>
+            <select id="department">
+                <option value="">Select department</option>
+                <option value="Information Technology">Information Technology</option>
+                <option value="Computer Engineering">Computer Engineering</option>
+                <option value="AI & Data Science">AI & Data Science</option>
+                <option value="Electronics & Telecommunication">
+                    Electronics & Telecommunication
+                </option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="division">Division <b>*</b></label>
+            <select id="division">
+                <option value="">Select division</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="contact">Contact Number <b>*</b></label>
+            <input type="tel" id="contact"
+                   placeholder="10-digit mobile number"
+                   maxlength="10">
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Book Information -->
+<section class="card">
+    <div class="section-heading">
+        <span>02</span>
+        <div>
+            <h3>Book Details</h3>
+            <p>Select the book you want to issue.</p>
+        </div>
+    </div>
+
+    <div class="form-grid">
+
+        <div class="form-group">
+            <label for="book">Select Book <b>*</b></label>
+            <select id="book">
+                <option value="">Loading books...</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="issueDate">Issue Date <b>*</b></label>
+            <input type="date" id="issueDate">
+        </div>
+
+        <div class="form-group">
+            <label for="dueDate">Due Date <b>*</b></label>
+            <input type="date" id="dueDate">
+            <small>Default borrowing period: 7 days</small>
+        </div>
+
+        <div class="form-group full">
+            <label for="remarks">Remarks</label>
+            <textarea id="remarks" rows="3"
+                      placeholder="Add any additional information (optional)"></textarea>
+        </div>
+
+    </div>
+
+    <div class="form-actions">
+        <button type="button" id="submitBtn" class="btn primary-btn">
+            Issue Book →
+        </button>
+
+        <button type="button" id="resetBtn" class="btn secondary-btn">
+            Clear Form
+        </button>
+    </div>
+
+    <div id="message" class="message"></div>
+</section>
+
+
+<!-- Transactions -->
+<section class="card">
+    <div class="records-header">
+        <div class="section-heading">
+            <span>03</span>
             <div>
-                <p class="eyebrow">LIBRARY PORTAL</p>
-
-                <h2>Issue a Book</h2>
-
-                <p>
-                    Enter your details and select the book you want to issue
-                    from the library.
-                </p>
+                <h3>Recent Transactions</h3>
+                <p>Books issued through this portal.</p>
             </div>
-
-        </section>
-
-
-        <!-- Student Information -->
-        <section class="card">
-
-            <div class="section-heading">
-
-                <div class="heading-number">01</div>
-
-                <div>
-                    <h3>Student Information</h3>
-
-                    <p>
-                        Provide your basic academic and contact details.
-                    </p>
-                </div>
-
-            </div>
-
-
-            <div class="form-grid">
-
-                <!-- Name -->
-                <div class="form-group">
-
-                    <label for="studentName">
-                        Full Name <span>*</span>
-                    </label>
-
-                    <input
-                        type="text"
-                        id="studentName"
-                        placeholder="Enter your full name"
-                        autocomplete="name"
-                    >
-
-                </div>
-
-
-                <!-- Academic Year -->
-                <div class="form-group">
-
-                    <label for="academicYear">
-                        Academic Year <span>*</span>
-                    </label>
-
-                    <select id="academicYear">
-
-                        <option value="">
-                            Select academic year
-                        </option>
-
-                        <option value="FE">FE</option>
-                        <option value="SE">SE</option>
-                        <option value="TE">TE</option>
-                        <option value="BE">BE</option>
-
-                    </select>
-
-                </div>
-
-
-                <!-- Department -->
-                <div class="form-group">
-
-                    <label for="department">
-                        Department <span>*</span>
-                    </label>
-
-                    <select id="department">
-
-                        <option value="">
-                            Select department
-                        </option>
-
-                        <option value="Information Technology">
-                            Information Technology
-                        </option>
-
-                        <option value="Computer Engineering">
-                            Computer Engineering
-                        </option>
-
-                        <option value="AI & Data Science">
-                            AI & Data Science
-                        </option>
-
-                        <option value="Electronics & Telecommunication">
-                            Electronics & Telecommunication
-                        </option>
-
-                        <option value="Other">
-                            Other
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <!-- Division -->
-                <div class="form-group">
-
-                    <label for="division">
-                        Division <span>*</span>
-                    </label>
-
-                    <select id="division">
-
-                        <option value="">
-                            Select division
-                        </option>
-
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                        <option value="D">D</option>
-
-                    </select>
-
-                </div>
-
-
-                <!-- Contact -->
-                <div class="form-group">
-
-                    <label for="contact">
-                        Contact Number <span>*</span>
-                    </label>
-
-                    <input
-                        type="tel"
-                        id="contact"
-                        placeholder="10-digit mobile number"
-                        maxlength="10"
-                        autocomplete="tel"
-                    >
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- Book Information -->
-        <section class="card">
-
-            <div class="section-heading">
-
-                <div class="heading-number">02</div>
-
-                <div>
-                    <h3>Book Details</h3>
-
-                    <p>
-                        Select the book you want to issue.
-                    </p>
-                </div>
-
-            </div>
-
-
-            <div class="form-grid">
-
-                <!-- Book -->
-                <div class="form-group">
-
-                    <label for="book">
-                        Select Book <span>*</span>
-                    </label>
-
-                    <select id="book">
-
-                        <option value="">
-                            Select a book
-                        </option>
-
-                        <option value="B001">
-                            B001 — JavaScript Basics
-                        </option>
-
-                        <option value="B002">
-                            B002 — Database Management Systems
-                        </option>
-
-                        <option value="B003">
-                            B003 — Computer Networks
-                        </option>
-
-                        <option value="B004">
-                            B004 — Operating Systems
-                        </option>
-
-                        <option value="B005">
-                            B005 — Web Development
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <!-- Book ID -->
-                <div class="form-group">
-
-                    <label for="bookId">
-                        Book ID
-                    </label>
-
-                    <input
-                        type="text"
-                        id="bookId"
-                        placeholder="Automatically filled"
-                        readonly
-                    >
-
-                </div>
-
-
-                <!-- Issue Date -->
-                <div class="form-group">
-
-                    <label for="issueDate">
-                        Issue Date <span>*</span>
-                    </label>
-
-                    <input
-                        type="date"
-                        id="issueDate"
-                    >
-
-                </div>
-
-
-                <!-- Due Date -->
-                <div class="form-group">
-
-                    <label for="dueDate">
-                        Due Date <span>*</span>
-                    </label>
-
-                    <input
-                        type="date"
-                        id="dueDate"
-                    >
-
-                    <small>
-                        Default borrowing period: 7 days
-                    </small>
-
-                </div>
-
-
-                <!-- Remarks -->
-                <div class="form-group full-width">
-
-                    <label for="remarks">
-                        Remarks
-                    </label>
-
-                    <textarea
-                        id="remarks"
-                        rows="3"
-                        placeholder="Add any additional information (optional)"
-                    ></textarea>
-
-                </div>
-
-            </div>
-
-
-            <!-- Buttons -->
-            <div class="form-actions">
-
-                <button
-                    type="submit"
-                    id="submitBtn"
-                    class="btn primary-btn"
-                >
-                    Issue Book
-                    <span>→</span>
-                </button>
-
-                <button
-                    type="button"
-                    id="resetBtn"
-                    class="btn secondary-btn"
-                >
-                    Clear Form
-                </button>
-
-            </div>
-
-
-            <!-- Message -->
-            <div
-                id="message"
-                class="message"
-                role="alert"
-            ></div>
-
-        </section>
-
-
-        <!-- Transaction Records -->
-        <section class="card">
-
-            <div class="records-header">
-
-                <div class="section-heading no-margin">
-
-                    <div class="heading-number">03</div>
-
-                    <div>
-                        <h3>Recent Transactions</h3>
-
-                        <p>
-                            Books issued through this portal.
-                        </p>
-                    </div>
-
-                </div>
-
-                <div class="record-count">
-                    <span id="recordCount">0</span> Records
-                </div>
-
-            </div>
-
-
-            <div class="table-wrapper">
-
-                <table>
-
-                    <thead>
-
-                        <tr>
-                            <th>Student</th>
-                            <th>Department</th>
-                            <th>Year</th>
-                            <th>Book</th>
-                            <th>Issue Date</th>
-                            <th>Due Date</th>
-                            <th>Status</th>
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody id="transactionBody">
-
-                        <!-- JavaScript will insert rows here -->
-
-                        <tr id="emptyRow">
-
-                            <td
-                                colspan="7"
-                                class="empty-state"
-                            >
-                                <div class="empty-icon">📖</div>
-
-                                <strong>
-                                    No transactions yet
-                                </strong>
-
-                                <p>
-                                    Issued books will appear here.
-                                </p>
-                            </td>
-
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- Footer -->
-    <footer>
-
-        <p>
-            TCETLib &copy; 2026
-        </p>
-
-        <span>
-            Library Management System
-        </span>
-
-    </footer>
-
-
-    <script src="js/script.js"></script>
+        </div>
+
+        <div class="record-count">
+            <strong id="recordCount">0</strong> Records
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Department</th>
+                    <th>Year</th>
+                    <th>Book</th>
+                    <th>Issue Date</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody id="transactionBody">
+                <tr>
+                    <td colspan="7" class="empty-state">
+                        No transactions yet
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+```
+
+</main>
+
+<footer>
+    <p>TCETLib &copy; 2026</p>
+    <span>Library Management System</span>
+</footer>
+
+<script src="js/script.js"></script>
 
 </body>
-
 </html>

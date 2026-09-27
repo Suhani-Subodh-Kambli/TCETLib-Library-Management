@@ -1,732 +1,334 @@
-/* =========================================
-   TCETLib
-   Library Management System
-   ========================================= */
-
-
-/* -----------------------------
-   Reset
------------------------------ */
-
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-
-/* -----------------------------
-   General
------------------------------ */
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  }
 
 body {
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    background: #f4f6f8;
-
-    color: #1f2937;
-
-    line-height: 1.5;
+font-family: Arial, sans-serif;
+background: #f5f7fb;
+color: #172033;
+line-height: 1.5;
 }
-
-
-/* -----------------------------
-   Header
------------------------------ */
-
-.header {
-    background: #172554;
-
-    color: white;
-
-    padding: 18px 7%;
-
-    box-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-
-.header-content {
-    max-width: 1200px;
-
-    margin: auto;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-}
-
-
-.brand {
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-}
-
-
-.logo {
-    width: 44px;
-
-    height: 44px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    background: rgba(255, 255, 255, 0.12);
-
-    border-radius: 10px;
-
-    font-size: 22px;
-}
-
-
-.brand h1 {
-    font-size: 22px;
-
-    letter-spacing: 0.3px;
-}
-
-
-.brand p {
-    font-size: 12px;
-
-    color: #bfdbfe;
-}
-
-
-.header-tag {
-    font-size: 12px;
-
-    padding: 7px 12px;
-
-    border: 1px solid rgba(255, 255, 255, 0.2);
-
-    border-radius: 20px;
-
-    color: #dbeafe;
-}
-
-
-/* -----------------------------
-   Main
------------------------------ */
 
 .container {
-    width: 90%;
-
-    max-width: 1200px;
-
-    margin: 35px auto;
+width: min(1100px, 92%);
+margin: auto;
 }
 
+/* Header */
 
-/* -----------------------------
-   Welcome Section
------------------------------ */
+.header {
+background: #14213d;
+color: white;
+padding: 22px 0;
+}
+
+.header-content {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.brand {
+display: flex;
+align-items: center;
+gap: 12px;
+}
+
+.logo {
+font-size: 32px;
+}
+
+.brand h1 {
+font-size: 24px;
+}
+
+.brand p {
+color: #cbd5e1;
+font-size: 14px;
+}
+
+.header-tag {
+font-size: 14px;
+color: #dbeafe;
+}
+
+/* Welcome */
 
 .welcome {
-    margin-bottom: 25px;
+padding: 42px 0 25px;
 }
-
 
 .eyebrow {
-    color: #2563eb;
-
-    font-size: 11px;
-
-    font-weight: bold;
-
-    letter-spacing: 1.5px;
-
-    margin-bottom: 5px;
+color: #2563eb;
+font-size: 12px;
+font-weight: bold;
+letter-spacing: 1.5px;
 }
-
 
 .welcome h2 {
-    font-size: 30px;
-
-    color: #111827;
-
-    margin-bottom: 5px;
+font-size: 30px;
+margin: 5px 0;
 }
-
 
 .welcome p:last-child {
-    color: #6b7280;
-
-    font-size: 14px;
+color: #64748b;
 }
 
-
-/* -----------------------------
-   Card
------------------------------ */
+/* Cards */
 
 .card {
-    background: white;
-
-    border: 1px solid #e5e7eb;
-
-    border-radius: 12px;
-
-    padding: 28px;
-
-    margin-bottom: 22px;
-
-    box-shadow:
-        0 3px 12px rgba(0, 0, 0, 0.035);
+background: white;
+border: 1px solid #e2e8f0;
+border-radius: 10px;
+padding: 28px;
+margin-bottom: 24px;
+box-shadow: 0 3px 12px rgba(15, 23, 42, 0.05);
 }
 
-
-/* -----------------------------
-   Section Heading
------------------------------ */
+/* Section headings */
 
 .section-heading {
-    display: flex;
-
-    align-items: flex-start;
-
-    gap: 12px;
-
-    margin-bottom: 25px;
+display: flex;
+align-items: center;
+gap: 12px;
+margin-bottom: 25px;
 }
 
-
-.heading-number {
-    min-width: 34px;
-
-    height: 34px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    background: #eff6ff;
-
-    color: #2563eb;
-
-    border-radius: 8px;
-
-    font-size: 12px;
-
-    font-weight: bold;
+.section-heading > span {
+background: #eaf2ff;
+color: #2563eb;
+width: 35px;
+height: 35px;
+display: grid;
+place-items: center;
+border-radius: 7px;
+font-size: 13px;
+font-weight: bold;
 }
-
 
 .section-heading h3 {
-    font-size: 17px;
-
-    color: #111827;
-
-    margin-bottom: 2px;
+font-size: 18px;
 }
-
 
 .section-heading p {
-    color: #6b7280;
-
-    font-size: 13px;
+color: #64748b;
+font-size: 13px;
 }
 
-
-.no-margin {
-    margin-bottom: 0;
-}
-
-
-/* -----------------------------
-   Form Grid
------------------------------ */
+/* Form */
 
 .form-grid {
-    display: grid;
-
-    grid-template-columns: repeat(2, 1fr);
-
-    gap: 20px 24px;
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 20px;
 }
-
 
 .form-group {
-    display: flex;
-
-    flex-direction: column;
+display: flex;
+flex-direction: column;
+gap: 7px;
 }
 
-
-.full-width {
-    grid-column: 1 / -1;
+.form-group.full {
+grid-column: 1 / -1;
 }
 
-
-/* -----------------------------
-   Labels
------------------------------ */
-
-.form-group label {
-    font-size: 13px;
-
-    font-weight: 600;
-
-    color: #374151;
-
-    margin-bottom: 7px;
+label {
+font-size: 14px;
+font-weight: 600;
 }
 
-
-.form-group label span {
-    color: #dc2626;
+label b {
+color: #dc2626;
 }
 
-
-/* -----------------------------
-   Inputs
------------------------------ */
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-
-    width: 100%;
-
-    padding: 11px 12px;
-
-    border: 1px solid #d1d5db;
-
-    border-radius: 7px;
-
-    background: #ffffff;
-
-    color: #1f2937;
-
-    font-family: inherit;
-
-    font-size: 13px;
-
-    outline: none;
-
-    transition:
-        border-color 0.2s,
-        box-shadow 0.2s;
+input,
+select,
+textarea {
+width: 100%;
+padding: 11px 12px;
+border: 1px solid #cbd5e1;
+border-radius: 6px;
+font: inherit;
+color: #172033;
+background: white;
+outline: none;
 }
 
-
-.form-group textarea {
-    resize: vertical;
-
-    min-height: 80px;
+input:focus,
+select:focus,
+textarea:focus {
+border-color: #2563eb;
 }
 
-
-.form-group input::placeholder,
-.form-group textarea::placeholder {
-    color: #9ca3af;
+textarea {
+resize: vertical;
 }
 
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-
-    border-color: #2563eb;
-
-    box-shadow:
-        0 0 0 3px rgba(37, 99, 235, 0.08);
+small {
+color: #64748b;
+font-size: 12px;
 }
 
-
-.form-group input[readonly] {
-
-    background: #f9fafb;
-
-    color: #6b7280;
-}
-
-
-.form-group small {
-    margin-top: 5px;
-
-    font-size: 11px;
-
-    color: #9ca3af;
-}
-
-
-/* -----------------------------
-   Buttons
------------------------------ */
+/* Buttons */
 
 .form-actions {
-
-    display: flex;
-
-    gap: 10px;
-
-    margin-top: 25px;
-
-    padding-top: 22px;
-
-    border-top: 1px solid #f0f0f0;
+display: flex;
+gap: 12px;
+margin-top: 25px;
 }
-
 
 .btn {
-
-    border: none;
-
-    border-radius: 7px;
-
-    padding: 11px 18px;
-
-    font-family: inherit;
-
-    font-size: 13px;
-
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition:
-        background 0.2s,
-        transform 0.1s;
+border: none;
+border-radius: 6px;
+padding: 11px 18px;
+font-size: 14px;
+cursor: pointer;
 }
-
-
-.btn:active {
-    transform: translateY(1px);
-}
-
 
 .primary-btn {
-
-    background: #2563eb;
-
-    color: white;
+background: #2563eb;
+color: white;
 }
-
 
 .primary-btn:hover {
-    background: #1d4ed8;
+background: #1d4ed8;
 }
-
-
-.primary-btn span {
-    margin-left: 8px;
-
-    font-size: 16px;
-}
-
 
 .secondary-btn {
-
-    background: #f3f4f6;
-
-    color: #374151;
+background: #e2e8f0;
+color: #334155;
 }
-
 
 .secondary-btn:hover {
-    background: #e5e7eb;
+background: #cbd5e1;
 }
 
+.btn:disabled {
+opacity: 0.6;
+cursor: not-allowed;
+}
 
-/* -----------------------------
-   Messages
------------------------------ */
+/* Messages */
 
 .message {
-
-    display: none;
-
-    margin-top: 18px;
-
-    padding: 11px 14px;
-
-    border-radius: 7px;
-
-    font-size: 13px;
+min-height: 20px;
+margin-top: 15px;
+font-size: 14px;
+font-weight: 600;
 }
-
 
 .message.success {
-
-    display: block;
-
-    background: #ecfdf5;
-
-    color: #047857;
-
-    border: 1px solid #a7f3d0;
+color: #15803d;
 }
-
 
 .message.error {
-
-    display: block;
-
-    background: #fef2f2;
-
-    color: #b91c1c;
-
-    border: 1px solid #fecaca;
+color: #dc2626;
 }
 
-
-/* -----------------------------
-   Records Header
------------------------------ */
+/* Transactions */
 
 .records-header {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    margin-bottom: 20px;
+display: flex;
+justify-content: space-between;
+align-items: center;
 }
-
 
 .record-count {
-
-    font-size: 12px;
-
-    color: #6b7280;
-
-    background: #f9fafb;
-
-    padding: 7px 11px;
-
-    border-radius: 20px;
-
-    border: 1px solid #e5e7eb;
+color: #64748b;
+font-size: 14px;
 }
 
-
-.record-count span {
-
-    color: #2563eb;
-
-    font-weight: bold;
+.record-count strong {
+color: #2563eb;
 }
-
-
-/* -----------------------------
-   Table
------------------------------ */
 
 .table-wrapper {
-    width: 100%;
-
-    overflow-x: auto;
+overflow-x: auto;
 }
-
 
 table {
-
-    width: 100%;
-
-    border-collapse: collapse;
-
-    min-width: 800px;
+width: 100%;
+border-collapse: collapse;
+margin-top: 5px;
 }
 
-
-thead {
-    background: #f8fafc;
+th,
+td {
+padding: 13px 10px;
+border-bottom: 1px solid #e2e8f0;
+text-align: left;
+font-size: 13px;
 }
-
 
 th {
-
-    padding: 12px 10px;
-
-    text-align: left;
-
-    font-size: 11px;
-
-    text-transform: uppercase;
-
-    letter-spacing: 0.4px;
-
-    color: #6b7280;
-
-    border-bottom: 1px solid #e5e7eb;
+background: #f8fafc;
+color: #475569;
+font-weight: 600;
 }
-
-
-td {
-
-    padding: 13px 10px;
-
-    font-size: 12px;
-
-    color: #4b5563;
-
-    border-bottom: 1px solid #f0f0f0;
-}
-
-
-tbody tr:hover {
-    background: #fafcff;
-}
-
-
-/* -----------------------------
-   Status
------------------------------ */
-
-.status {
-
-    display: inline-block;
-
-    padding: 4px 9px;
-
-    border-radius: 20px;
-
-    font-size: 11px;
-
-    font-weight: 600;
-
-    background: #fef3c7;
-
-    color: #92400e;
-}
-
-
-/* -----------------------------
-   Empty State
------------------------------ */
 
 .empty-state {
-
-    text-align: center;
-
-    padding: 45px 20px;
-
-    color: #9ca3af;
+text-align: center;
+color: #64748b;
+padding: 30px;
 }
 
+/* Status */
 
-.empty-state .empty-icon {
-
-    font-size: 28px;
-
-    margin-bottom: 8px;
+.status {
+font-weight: 600;
 }
 
-
-.empty-state strong {
-
-    display: block;
-
-    color: #6b7280;
-
-    font-size: 13px;
-
-    margin-bottom: 3px;
+.status.issued {
+color: #2563eb;
 }
 
-
-.empty-state p {
-    font-size: 12px;
+.status.returned {
+color: #15803d;
 }
 
-
-/* -----------------------------
-   Footer
------------------------------ */
+/* Footer */
 
 footer {
-
-    text-align: center;
-
-    padding: 25px;
-
-    color: #9ca3af;
-
-    font-size: 11px;
-
-    border-top: 1px solid #e5e7eb;
+text-align: center;
+padding: 25px;
+color: #64748b;
+font-size: 13px;
 }
-
 
 footer span {
-
-    margin-left: 5px;
-
-    color: #c4c7cc;
+display: block;
+margin-top: 3px;
 }
 
-
-/* -----------------------------
-   Responsive
------------------------------ */
+/* Responsive */
 
 @media (max-width: 700px) {
 
-    .header {
-        padding: 16px 5%;
-    }
+.header-content,
+.records-header {
+    align-items: flex-start;
+    gap: 15px;
+    flex-direction: column;
+}
 
-    .header-content {
-        align-items: flex-start;
-    }
+.form-grid {
+    grid-template-columns: 1fr;
+}
 
-    .header-tag {
-        display: none;
-    }
+.form-group.full {
+    grid-column: auto;
+}
 
-    .container {
-        width: 94%;
+.card {
+    padding: 20px;
+}
 
-        margin-top: 25px;
-    }
+.welcome h2 {
+    font-size: 25px;
+}
 
-    .welcome h2 {
-        font-size: 25px;
-    }
-
-    .card {
-        padding: 20px;
-    }
-
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .full-width {
-        grid-column: auto;
-    }
-
-    .form-actions {
-        flex-direction: column;
-    }
-
-    .btn {
-        width: 100%;
-    }
-
-    .records-header {
-        align-items: flex-start;
-
-        gap: 10px;
-
-        flex-direction: column;
-    }
 
 }
