@@ -29,7 +29,7 @@
 
 <main class="container">
 
-```
+
 <section class="welcome">
     <p class="eyebrow">LIBRARY PORTAL</p>
     <h2>Issue a Book</h2>
@@ -121,16 +121,12 @@
             </select>
         </div>
 
-        <div class="form-group">
-            <label for="issueDate">Issue Date <b>*</b></label>
-            <input type="date" id="issueDate">
-        </div>
+    <div class="form-group">
+        <label for="dueDate">Due Date</label>
+        <input type="date" id="dueDate" readonly>
+        <small>Automatically set to 7 days after the issue date.</small>
+    </div>
 
-        <div class="form-group">
-            <label for="dueDate">Due Date <b>*</b></label>
-            <input type="date" id="dueDate">
-            <small>Default borrowing period: 7 days</small>
-        </div>
 
         <div class="form-group full">
             <label for="remarks">Remarks</label>
@@ -194,7 +190,7 @@
         </table>
     </div>
 </section>
-```
+
 
 </main>
 

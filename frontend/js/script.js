@@ -20,11 +20,11 @@ const recordCount = document.getElementById("recordCount");
 
 // Set today's date
 function setDates() {
-const today = new Date();
+const today = new Date();  //create date object
 
-issueDate.value = today.toISOString().split("T")[0];
+issueDate.value = today.toISOString().split("T")[0]; //2026-09-27T17:18:32.000Z
 
-const due = new Date(today);
+const due = new Date(today);  //create date object based on today's date
 due.setDate(due.getDate() + 7);
 
 dueDate.value = due.toISOString().split("T")[0];
@@ -63,10 +63,9 @@ dueDate.value = date.toISOString().split("T")[0];
 // Load books from database
 async function loadBooks() {
 
-
 try {
     const response = await fetch(API + "/books.php");
-    const result = await response.json();
+    const result = await response.json();  //convert server's json response into Js object
 
     if (!result.success) {
         throw new Error(result.message);
@@ -249,9 +248,9 @@ try {
     const response = await fetch(API + "/issue.php", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json"  //data we are sending is json
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data)  //converts data(js object) to JSON text
     });
 
     const result = await response.json();
