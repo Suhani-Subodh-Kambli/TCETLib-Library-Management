@@ -1,1008 +1,190 @@
-# Library Management System
+# TCETLib – Library Management System
 
-## Project Scope
+## Project Overview
 
-A web application for managing:
+TCETLib is a web-based Library Management System developed to manage book issuing and return records. It provides a simple interface for students to enter their details, select available books, and view recent library transactions.
 
-* Books
-* Book issue
-* Book return
-* Issue/return transactions
+The project demonstrates frontend development using HTML, CSS, and JavaScript, along with backend integration using PHP and MySQL.
 
-### Technology
+## Objectives
 
-| Part | Technology            | Responsible |
-| ---- | --------------------- | ----------- |
-| S1   | HTML, CSS, JavaScript | S1          |
-| S2   | PHP, MySQL            | S2          |
+* Develop a user-friendly interface for issuing books.
+* Validate student details and form inputs using JavaScript.
+* Display available books retrieved from the database.
+* Store and retrieve book issue and return records.
+* Demonstrate DOM manipulation, event handling, and database operations.
 
----
+## Technologies Used
 
-# IMPORTANT: WORK DIVISION
+* **HTML5** – Structure of the web application.
+* **CSS3** – Styling and responsive layout.
+* **JavaScript** – Form validation, DOM manipulation, event handling, and API communication.
+* **PHP** – Backend API and database operations.
+* **MySQL** – Storage of book details and transaction records.
+* **Fetch API** – Communication between JavaScript and PHP.
 
-To avoid conflicts, **S1 and S2 must work independently**.
+## Features
 
-## S1 will ONLY handle:
+* Student information form.
+* Academic year, department, division, and contact number fields.
+* Book selection from available books.
+* Automatic issue date and due date calculation.
+* Client-side form validation.
+* Contact number input restricted to 10 digits.
+* Display of recent book transactions.
+* Dynamic updates after a successful book issue.
+* Clear form functionality.
+* Responsive user interface.
 
-* HTML
-* CSS
-* JavaScript
-* UI
-* DOM manipulation
-* Events
-* Client-side validation
-* API calls using Fetch
-* Displaying backend responses
-
-## S2 will ONLY handle:
-
-* PHP
-* MySQL
-* Database design
-* SQL queries
-* Backend validation
-* CRUD operations
-* Issue/return logic
-* API endpoints
-* JSON responses
-
-### Neither person should modify the other's main files.
-
-The only connection between S1 and S2 will be through the **defined API endpoints and JSON response format**.
-
----
-
-# S1 — FRONTEND + JAVASCRIPT
-
-## S1 Responsibilities
-
-S1 is responsible for the complete user interface and all JavaScript functionality.
-
----
-
-## S1 Features
-
-### 1. Dashboard
-
-Create a dashboard showing:
-
-* Total Books
-* Available Books
-* Issued Books
-* Total Transactions
-
-These values will be received from the S2 API.
-
-S1 will **only display these values**.
-
-S1 will NOT calculate them from the database.
-
----
-
-# 2. Book Management UI
-
-Create a Books section.
-
-Display:
-
-* Book ID
-* Book Title
-* Author
-* Category
-* Total Quantity
-* Available Quantity
-* Status
-
-Example:
+## Project Structure
 
 ```text
-----------------------------------------------------------
-ID   Title          Author      Quantity   Available
-----------------------------------------------------------
-1    JavaScript     John        5          3
-2    PHP Basics     Alex        3          0
-3    DBMS           Smith       4          4
-----------------------------------------------------------
+TCETLib/
+├── frontend/
+│   ├── index.html
+│   ├── css/
+│   │   └── style.css
+│   └── js/
+│       └── script.js
+├── backend/
+│   ├── README.md
+│   ├── config/
+│   │   └── database.php
+│   ├── api/
+│   │   ├── books.php
+│   │   ├── dashboard.php
+│   │   ├── issue.php
+│   │   ├── return.php
+│   │   └── transactions.php
+│   └── database/
+│       └── library_management.sql
+└── README.md
 ```
 
-### S1 will implement:
+## Installation and Setup
 
-* Book table
-* Search books
-* Display book data
-* Add Book form
-* Edit Book form
-* Delete Book button
-* Loading states
-* Success messages
-* Error messages
+### Prerequisites
 
-### S1 will NOT:
+Install the following software:
 
-* Write SQL
-* Connect to MySQL
-* Implement database queries
+* A modern web browser.
+* XAMPP or another PHP environment.
+* MySQL Server and MySQL Workbench.
+* Visual Studio Code (recommended).
 
----
+### Step 1: Clone the Repository
 
-# 3. Add Book
+git clone https://github.com/Suhani-Subodh-Kambli/TCETLib-Library-Management.git
+cd TCETLib
 
-Create a form:
 
-```text
-Book Title
-Author
-Category
-Quantity
+### Step 2: Set Up the Database
 
-[ Add Book ]
-```
+1. Open MySQL Workbench.
+2. Connect to your MySQL Server.
+3. Open `backend/database/library_management.sql`.
+4. Execute the SQL script to create the database and required tables.
+5. Verify that the `books` and `transactions` tables have been created.
 
-### JavaScript validation:
+### Step 3: Configure the Database Connection
 
-* Title cannot be empty
-* Author cannot be empty
-* Category cannot be empty
-* Quantity must be a positive number
+Open `backend/config/database.php` and configure the connection details according to your MySQL setup.
 
-After validation:
 
-```text
-JavaScript
-   ↓
-Fetch POST request
-   ↓
-PHP API
-```
+$host = "localhost";
+$dbname = "library_management";
+$username = "root";
+$password = "";
 
-After receiving the response, S1 displays the message.
 
----
+Update the username and password if your MySQL configuration is different.
 
-# 4. Edit Book
+### Step 4: Start the PHP Backend
 
-Create an edit option for each book.
+Open a terminal in the `backend` directory and run:
 
-The form should allow changing:
 
-* Title
-* Author
-* Category
-* Quantity
+php -S localhost:8000
 
-JavaScript validates the data and sends it to the PHP API.
 
----
+Alternatively, configure the project to run using XAMPP's Apache server and the appropriate project directory.
 
-# 5. Delete Book
+### Step 5: Start the Frontend
 
-Each book can have a Delete button.
+Open the `frontend` folder in Visual Studio Code and launch `index.html` using the Live Server extension.
 
-Before deletion, show confirmation:
+The frontend should be accessible at:
 
-```text
-Are you sure you want to delete this book?
+http://localhost:5500
 
-[ Cancel ] [ Delete ]
-```
 
-After confirmation:
+The backend API runs at:
 
-```text
-JavaScript
-    ↓
-DELETE request
-    ↓
-PHP API
-    ↓
-MySQL
-```
+http://localhost:8000/api/
 
-S1 only handles the UI and request.
 
----
+Ensure that the frontend API URL and backend CORS configuration match your local setup.
 
-# 6. Issue Book
+## JavaScript Implementation (S1)
 
-Create an Issue Book section.
+The frontend JavaScript implementation focuses on:
 
-Fields:
+* **DOM Manipulation:** Accessing and updating HTML elements dynamically.
+* **Event Handling:** Responding to user input, date changes, and button clicks.
+* **Form Validation:** Checking required fields, contact number format, book selection, and date validity.
+* **Regular Expressions:** Removing non-digit characters and validating 10-digit contact numbers.
+* **Fetch API:** Sending requests to PHP endpoints and retrieving database records.
+* **Asynchronous JavaScript:** Using `async` and `await` to handle API requests.
+* **Error Handling:** Using `try`, `catch`, and `finally` to handle failures and restore button states.
 
-```text
-Student Name
-Select Book
-Issue Date
+## Backend Implementation (S2)
 
-[ Issue Book ]
-```
+The PHP backend provides API endpoints for:
 
-### JavaScript validation:
+* Managing book records.
+* Retrieving available books.
+* Issuing books.
+* Returning issued books.
+* Retrieving transaction records.
+* Fetching dashboard statistics.
 
-* Student name required
-* Book required
-* Issue date required
-* Student name cannot contain only spaces
+MySQL stores the book information, available quantities, and transaction records.
 
-If the selected book is unavailable, display:
+## Application Workflow
 
-```text
-Book is currently unavailable.
-```
+1. The frontend loads available books and recent transactions from the PHP API.
+2. The student enters their details and selects a book.
+3. JavaScript validates the form before submission.
+4. The Fetch API sends the form data to the backend.
+5. PHP validates the request and performs the database operation.
+6. MySQL updates the relevant records.
+7. JavaScript displays the response and refreshes the book list and transaction table.
 
-S1 sends the request to PHP.
+## Validation
 
-S1 does NOT decide whether the book is actually available.
+The frontend performs the following validations:
 
-The final availability check is done by S2.
+* Required student details must be entered.
+* Academic year, department, division, and book must be selected.
+* Contact number must contain exactly 10 digits.
+* Non-digit characters are removed from the contact number input.
+* Issue date and due date must be provided.
+* Due date cannot be earlier than the issue date.
 
----
+Backend validation is also necessary to protect database operations from invalid requests.
 
-# 7. Return Book
+## Team Responsibilities
 
-Create a Return Book section.
+* **Suhani S Kambli (S1):** JavaScript implementation, form validation, DOM manipulation, event handling, and frontend-to-backend API integration.
+* **Mahika S Chaurasiya (S2):** PHP backend development, MySQL database operations, and API implementation.
 
-User can enter/select:
+## Future Enhancements
 
-```text
-Transaction ID
+* Student authentication and authorization.
+* Search and filtering of books.
+* Book return functionality through the frontend.
+* Overdue book notifications.
+* Transaction history filtering.
+* Improved reporting and dashboard visualizations.
 
-[ Find Transaction ]
-```
 
-Display:
-
-```text
-Student Name
-Book
-Issue Date
-Status
-```
-
-Then:
-
-```text
-[ Return Book ]
-```
-
-JavaScript validates the input and sends the return request to PHP.
-
----
-
-# 8. Transaction History
-
-Display all transactions.
-
-Columns:
-
-```text
-Transaction ID
-Student Name
-Book
-Issue Date
-Return Date
-Status
-```
-
-Example:
-
-```text
--------------------------------------------------------------
-ID   Student   Book            Issue Date   Return Date
--------------------------------------------------------------
-1    Mahika    JavaScript      27/09/26     -
-2    Suhani    PHP             25/09/26     27/09/26
--------------------------------------------------------------
-```
-
-Status:
-
-```text
-Issued
-Returned
-```
-
----
-
-# 9. Search
-
-JavaScript should provide book search.
-
-Example:
-
-```text
-Search: [ JavaScript ]
-
-JavaScript Basics
-JavaScript Advanced
-```
-
-This should demonstrate JavaScript input events and DOM manipulation.
-
----
-
-# 10. JavaScript Events
-
-S1 MUST demonstrate JavaScript events.
-
-Required events:
-
-### Form Submit
-
-```javascript
-form.addEventListener("submit", ...)
-```
-
-### Button Click
-
-```javascript
-button.addEventListener("click", ...)
-```
-
-### Search Input
-
-```javascript
-searchInput.addEventListener("input", ...)
-```
-
-### Select Change
-
-```javascript
-bookSelect.addEventListener("change", ...)
-```
-
----
-
-# 11. DOM Manipulation
-
-S1 MUST use JavaScript DOM manipulation for:
-
-* Adding table rows
-* Updating table rows
-* Removing deleted books
-* Updating book status
-* Showing success messages
-* Showing error messages
-* Updating dashboard values
-* Showing/hiding forms
-* Updating transaction status
-
----
-
-# 12. API Communication
-
-S1 will use Fetch API.
-
-Example:
-
-```javascript
-fetch("/api/books.php")
-```
-
-S1 does not implement the PHP API.
-
-S1 only consumes it.
-
----
-
-# S1 FILE OWNERSHIP
-
-S1 can create/modify:
-
-```text
-frontend/
-│
-├── index.html
-│
-├── css/
-│   └── style.css
-│
-├── js/
-│   ├── app.js
-│   ├── books.js
-│   ├── transactions.js
-│   └── validation.js
-│
-└── assets/
-```
-
-S1 should NOT modify:
-
-```text
-backend/
-api/
-config/
-database/
-*.php
-```
-
----
-
-# S2 — PHP + MYSQL BACKEND
-
-## S2 Responsibilities
-
-S2 is responsible for:
-
-* MySQL database
-* Database tables
-* PHP backend
-* API endpoints
-* SQL queries
-* CRUD operations
-* Backend validation
-* Issue logic
-* Return logic
-* JSON responses
-* Basic security
-
----
-
-# S2 Database
-
-Database name:
-
-```text
-library_management
-```
-
----
-
-# 1. Books Table
-
-Table:
-
-```text
-books
-```
-
-Columns:
-
-| Column             | Type      | Purpose             |
-| ------------------ | --------- | ------------------- |
-| id                 | INT       | Primary key         |
-| title              | VARCHAR   | Book title          |
-| author             | VARCHAR   | Author name         |
-| category           | VARCHAR   | Book category       |
-| quantity           | INT       | Total quantity      |
-| available_quantity | INT       | Currently available |
-| created_at         | TIMESTAMP | Creation time       |
-
----
-
-# 2. Transactions Table
-
-Table:
-
-```text
-transactions
-```
-
-Columns:
-
-| Column       | Type      | Purpose           |
-| ------------ | --------- | ----------------- |
-| id           | INT       | Primary key       |
-| student_name | VARCHAR   | Student name      |
-| book_id      | INT       | Related book      |
-| issue_date   | DATE      | Issue date        |
-| return_date  | DATE      | Return date       |
-| status       | VARCHAR   | Issued / Returned |
-| created_at   | TIMESTAMP | Creation time     |
-
-Relationship:
-
-```text
-books.id
-    ↓
-transactions.book_id
-```
-
----
-
-# S2 BOOK APIs
-
-## GET Books
-
-```text
-GET /api/books.php
-```
-
-Purpose:
-
-Return all books.
-
-Response:
-
-```json
-{
-    "success": true,
-    "data": []
-}
-```
-
----
-
-# POST Add Book
-
-```text
-POST /api/books.php
-```
-
-Data:
-
-```json
-{
-    "title": "JavaScript Basics",
-    "author": "John Smith",
-    "category": "Programming",
-    "quantity": 5
-}
-```
-
-PHP will:
-
-1. Validate data
-2. Insert book
-3. Set available quantity
-4. Return JSON response
-
----
-
-# PUT Update Book
-
-```text
-PUT /api/books.php
-```
-
-PHP will:
-
-1. Check book ID
-2. Validate data
-3. Update database
-4. Return response
-
----
-
-# DELETE Book
-
-```text
-DELETE /api/books.php
-```
-
-PHP will:
-
-1. Check book ID
-2. Check whether deletion is allowed
-3. Delete book
-4. Return response
-
----
-
-# S2 TRANSACTION APIs
-
-## Issue Book
-
-```text
-POST /api/issue.php
-```
-
-Data:
-
-```json
-{
-    "student_name": "Mahika",
-    "book_id": 1,
-    "issue_date": "2026-09-27"
-}
-```
-
-PHP must:
-
-1. Validate input
-2. Check whether book exists
-3. Check available quantity
-4. Create transaction
-5. Decrease available quantity
-6. Return JSON response
-
-Example:
-
-```json
-{
-    "success": true,
-    "message": "Book issued successfully"
-}
-```
-
----
-
-# Return Book
-
-```text
-POST /api/return.php
-```
-
-Data:
-
-```json
-{
-    "transaction_id": 1
-}
-```
-
-PHP must:
-
-1. Find transaction
-2. Check transaction status
-3. Set return date
-4. Change status to Returned
-5. Increase available quantity
-6. Return JSON response
-
----
-
-# GET Transactions
-
-```text
-GET /api/transactions.php
-```
-
-Returns:
-
-```text
-Transaction ID
-Student Name
-Book
-Issue Date
-Return Date
-Status
-```
-
----
-
-# S2 BACKEND VALIDATION
-
-Backend validation is mandatory.
-
-Even if S1 validates the form, S2 MUST validate again.
-
-For example:
-
-```text
-S1:
-"Book ID is required"
-
-        ↓
-
-S2:
-"Does this book actually exist?"
-
-        ↓
-
-S2:
-"Is available_quantity > 0?"
-
-        ↓
-
-S2:
-Create transaction
-```
-
----
-
-# S2 SECURITY
-
-Keep security simple and understandable.
-
-## 1. Prepared Statements
-
-Use PDO prepared statements.
-
-Example:
-
-```php
-$stmt = $pdo->prepare(
-    "SELECT * FROM books WHERE id = ?"
-);
-
-$stmt->execute([$bookId]);
-```
-
-Do NOT directly concatenate user input into SQL queries.
-
----
-
-## 2. Backend Validation
-
-Validate:
-
-* Required fields
-* Correct data types
-* Positive quantity
-* Valid book ID
-* Valid transaction ID
-* Book availability
-* Transaction status
-
----
-
-## 3. Database Credentials
-
-Database credentials must remain inside PHP backend configuration.
-
-Never put database credentials inside JavaScript.
-
----
-
-# S2 FILE OWNERSHIP
-
-S2 can create/modify:
-
-```text
-backend/
-│
-├── config/
-│   └── database.php
-│
-└── api/
-    ├── books.php
-    ├── issue.php
-    ├── return.php
-    └── transactions.php
-```
-
-S2 should NOT modify:
-
-```text
-frontend/index.html
-frontend/css/
-frontend/js/
-frontend/assets/
-```
-
----
-
-# SHARED API CONTRACT
-
-This is the ONLY major point where S1 and S2 need to coordinate.
-
-S1 expects PHP to return JSON.
-
-S2 must follow the agreed response format.
-
----
-
-## Success Response
-
-```json
-{
-    "success": true,
-    "message": "Operation successful",
-    "data": {}
-}
-```
-
----
-
-## Error Response
-
-```json
-{
-    "success": false,
-    "message": "Book is not available"
-}
-```
-
-S1 will display the `message`.
-
-S1 should NOT interpret SQL errors or database logic.
-
----
-
-# COMPLETE FEATURE LIST
-
-Only the following features will be implemented.
-
-## Books
-
-* [ ] View all books
-* [ ] Add book
-* [ ] Edit book
-* [ ] Delete book
-* [ ] Search books
-* [ ] Show available quantity
-
-## Issue
-
-* [ ] Issue book
-* [ ] Student name
-* [ ] Book selection
-* [ ] Issue date
-* [ ] Availability check
-* [ ] Reduce available quantity
-
-## Return
-
-* [ ] Find transaction
-* [ ] Return book
-* [ ] Return date
-* [ ] Change status
-* [ ] Increase available quantity
-
-## Transactions
-
-* [ ] View transaction history
-* [ ] Show issue date
-* [ ] Show return date
-* [ ] Show transaction status
-
-## S1 JavaScript Requirements
-
-* [ ] Form validation
-* [ ] DOM manipulation
-* [ ] Events
-* [ ] Fetch API
-* [ ] Dynamic UI updates
-* [ ] Error messages
-* [ ] Success messages
-
-## S2 PHP + MySQL Requirements
-
-* [ ] Database creation
-* [ ] Books table
-* [ ] Transactions table
-* [ ] CRUD operations
-* [ ] Issue logic
-* [ ] Return logic
-* [ ] Backend validation
-* [ ] Prepared statements
-* [ ] JSON API responses
-
----
-
-# FEATURES WE WILL NOT ADD
-
-To keep the project within the given requirements, DO NOT add:
-
-* Login/signup
-* User authentication
-* Admin roles
-* Email notifications
-* SMS
-* Payment
-* Fine calculation
-* Book reservation
-* AI
-* Chatbot
-* Advanced analytics
-* Charts
-* Notifications
-* Mobile app
-* External APIs
-* Cloud services
-
-The project will contain **only the features listed above**.
-
----
-
-# WORK CONFLICT RULE
-
-If a feature requires both frontend and backend:
-
-### S1 handles:
-
-```text
-UI
-Form
-Validation
-Events
-Fetch request
-Displaying response
-DOM update
-```
-
-### S2 handles:
-
-```text
-PHP
-Validation
-Database
-SQL
-Business logic
-JSON response
-```
-
-Example: **Issue Book**
-
-```text
-S1                              S2
-│                               │
-│ User fills form               │
-│                               │
-│ JS validates                  │
-│                               │
-│ POST /api/issue.php ─────────>│
-│                               │ PHP validates
-│                               │ Check book
-│                               │ Check availability
-│                               │ Create transaction
-│                               │ Update quantity
-│                               │
-│ <──────── JSON response ──────│
-│                               │
-│ Update DOM                    │
-│ Show message                  │
-```
-
-Neither side should implement the other's responsibility.
-
----
-
-# FINAL DIVISION
-
-## S1 — Suhani / Frontend
-
-**HTML + CSS + JavaScript**
-
-Responsible for:
-
-```text
-Dashboard UI
-Books UI
-Add/Edit/Delete UI
-Search
-Issue UI
-Return UI
-Transaction UI
-
-JavaScript:
-Validation
-DOM
-Events
-Fetch API
-UI updates
-```
-
----
-
-## S2 — Mahika / Backend 
-
-
-**PHP + MySQL**
-
-Responsible for:
-
-```text
-Database
-Books table
-Transactions table
-
-PHP:
-Books API
-Issue API
-Return API
-Transactions API
-
-SQL:
-INSERT
-SELECT
-UPDATE
-DELETE
-
-Backend validation
-Prepared statements
-Issue/return business logic
-JSON responses
-```
-
----
-
-# FINAL RULE
-
-**S1 does not write PHP or SQL.**
-
-**S2 does not write frontend HTML/CSS/JavaScript.**
-
-Both members communicate only through the agreed API endpoints and JSON response format.
-
-This division ensures that both S1 and S2 can develop their modules independently without overwriting or conflicting with each other's work.
