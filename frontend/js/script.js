@@ -1,4 +1,6 @@
-const API = "http://localhost:8000/api";
+const API = (!location.port || location.port === "80")
+    ? "http://localhost/TCETLib/backend/api"
+    : "http://localhost:8000/api";
 
 const studentName = document.getElementById("studentName");
 const academicYear = document.getElementById("academicYear");
@@ -29,7 +31,6 @@ due.setDate(due.getDate() + 7);
 
 dueDate.value = due.toISOString().split("T")[0];
 
-
 }
 
 // Show message
@@ -46,7 +47,6 @@ contact.value = contact.value.replace(/\D/g, "").slice(0, 10);
 // Change due date when issue date changes
 issueDate.addEventListener("change", function () {
 
-
 if (!issueDate.value) {
     dueDate.value = "";
     return;
@@ -56,7 +56,6 @@ const date = new Date(issueDate.value);
 date.setDate(date.getDate() + 7);
 
 dueDate.value = date.toISOString().split("T")[0];
-
 
 });
 
@@ -104,7 +103,6 @@ try {
 
 // Load transactions from database
 async function loadTransactions() {
-
 
 try {
     const response = await fetch(API + "/transactions.php");
@@ -168,12 +166,10 @@ try {
     recordCount.textContent = "0";
 }
 
-
 }
 
 // Validate form
 function validateForm() {
-
 
 if (!studentName.value.trim()) {
     showMessage("Please enter the student's name.", "error");
@@ -217,12 +213,10 @@ if (dueDate.value < issueDate.value) {
 
 return true;
 
-
 }
 
 // Issue book
 async function issueBook() {
-
 
 if (!validateForm()) {
     return;
@@ -285,7 +279,6 @@ try {
     submitBtn.textContent = "Issue Book →";
 }
 
-
 }
 
 // Clear form
@@ -305,7 +298,6 @@ setDates();
 if (showMessageText) {
     showMessage("Form cleared.", "success");
 }
-
 
 }
 
