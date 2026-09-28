@@ -226,18 +226,12 @@ Each row returns every field the frontend displays:
 
 ```json
 {
-    "id": 3,
     "student_name": "Mahika",
     "academic_year": "TE",
     "department": "Information Technology",
-    "division": "A",
-    "contact": "9876543210",
-    "book_id": 1,
     "book_title": "JavaScript Basics",
     "issue_date": "2026-09-27",
     "due_date": "2026-10-04",
-    "remarks": "Library card verified",
-    "return_date": null,
     "status": "Issued"
 }
 ```

@@ -8,18 +8,12 @@ if ($_SERVER["REQUEST_METHOD"] !== "GET") {
 
 $stmt = $pdo->query(
     "SELECT
-        t.id,
         t.student_name,
         t.academic_year,
         t.department,
-        t.division,
-        t.contact,
-        t.book_id,
         b.title AS book_title,
         t.issue_date,
         t.due_date,
-        t.remarks,
-        t.return_date,
         t.status
      FROM transactions t
      JOIN books b ON t.book_id = b.id
